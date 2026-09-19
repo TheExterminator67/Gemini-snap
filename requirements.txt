@@ -1,0 +1,4 @@
+rumps
+requests
+pyobjc-framework-Cocoa
+pyobjc-framework-Quartz

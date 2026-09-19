@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+.DS_Store
+*.bak
+# local leftovers
+README_1.md
+chatgpt_snap.py
