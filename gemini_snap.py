@@ -382,7 +382,7 @@ class ScreenAsk(rumps.App):
             from Quartz import CGPreflightScreenCaptureAccess, CGRequestScreenCaptureAccess
             if not CGPreflightScreenCaptureAccess():
                 CGRequestScreenCaptureAccess()
-                problems.append("Allow 'Screen Recording' for Terminal in System Settings "
+                problems.append("Allow 'Screen Recording' for this app (or Terminal) in System Settings "
                                 "→ Privacy & Security, then restart this app")
         except Exception:
             pass

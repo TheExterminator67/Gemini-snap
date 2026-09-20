@@ -5,3 +5,6 @@ __pycache__/
 # local leftovers
 README_1.md
 chatgpt_snap.py
+dist/
+build/
+*.spec
