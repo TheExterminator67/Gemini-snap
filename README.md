@@ -9,21 +9,38 @@ Status circle: red = idle, yellow = Gemini is working, green = answer ready
 It lives in the menu bar on Mac and in the system tray on Windows.
 
 First, get a **free** Gemini API key (each person needs their own): https://aistudio.google.com/apikey
-Then download this repo (green **Code** button -> Download ZIP, or `git clone`).
 
-## Easiest: download the ready-made app (no Python needed)
+## Easiest: download the ready-made app (no Python, no installing anything)
 
-Go to the **Releases** page of this repo and download:
+Open the **Releases** page of this repo (right side of the repo page) and download:
 
-- **Windows:** `GeminiSnap-Windows.exe` - double-click it. If Windows says "protected your PC",
-  click **More info** -> **Run anyway** (the app isn't code-signed).
-- **Mac (Apple Silicon):** `GeminiSnap-Mac.zip` - unzip, then **right-click GeminiSnap -> Open** the
-  first time. Allow **Screen Recording** for GeminiSnap when asked (System Settings ->
-  Privacy & Security), then quit and reopen it. Intel Macs: use the Python method below.
+### Mac
+- **Apple Silicon** (M1, M2, M3, M4...): `GeminiSnap-Mac-AppleSilicon.zip`
+- **Intel**: `GeminiSnap-Mac-Intel.zip`
 
-Then set your API key from the menu bar / tray circle. Shortcuts are listed below.
+Not sure which? Apple menu -> **About This Mac**: it says "Chip: Apple M..." or "Processor: Intel".
 
-## Or run from source
+1. Unzip it and drag **GeminiSnap** into your Applications folder.
+2. The first time, macOS blocks apps that aren't from the App Store. To open it:
+   - Try **right-click -> Open -> Open**. If that doesn't work (newer macOS): double-click it once,
+     then go to **System Settings -> Privacy & Security**, scroll down and click **Open Anyway**.
+   - Or paste this in Terminal once: `xattr -dr com.apple.quarantine /Applications/GeminiSnap.app`
+3. Click the circle in the menu bar -> **Set Gemini API Key...** and paste your free key
+   (https://aistudio.google.com/apikey).
+4. Allow **Screen Recording** for GeminiSnap when asked (System Settings -> Privacy & Security),
+   then quit and reopen it. Without it the screenshot is just your wallpaper.
+
+### Windows
+- `GeminiSnap-Windows.zip` - unzip it, open the folder and double-click `GeminiSnap.exe`.
+  The app isn't code-signed, so Windows Defender / your browser may warn about it (a common false
+  alarm for unsigned Python apps that take screenshots and use hotkeys). The full source is in this
+  repo. If it still gets blocked, use "Run from source" below.
+- Find the colored circle in the system tray (bottom-right, maybe under the ^ arrow), right-click it
+  -> **Set Gemini API Key...**
+
+Shortcuts are listed below.
+
+## Or run from source (needs Python 3.9+, for developers)
 
 ## macOS (needs Python 3.9+)
 

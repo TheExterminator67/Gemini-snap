@@ -1,6 +1,6 @@
 name: Build downloads
 
-# Push a tag like v1.0.0 to build the Windows .exe and Mac app and attach them to a GitHub Release.
+# Push a tag like v1.0.2 to build the Windows zip and the Mac apps and attach them to a GitHub Release.
 # You can also run it by hand from the Actions tab (workflow_dispatch) to just test the build.
 on:
   push:
@@ -18,22 +18,30 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Build .exe
+      - name: Build
         run: |
           pip install -r requirements-windows.txt pyinstaller
-          pyinstaller --noconsole --onefile --name GeminiSnap-Windows --hidden-import pystray._win32 --hidden-import mss.windows gemini_snap_windows.py
+          pyinstaller --noconsole --onedir --name GeminiSnap --hidden-import pystray._win32 --hidden-import mss.windows gemini_snap_windows.py
+          Compress-Archive -Path dist/GeminiSnap -DestinationPath GeminiSnap-Windows.zip
       - uses: actions/upload-artifact@v4
         with:
           name: windows
-          path: dist/GeminiSnap-Windows.exe
+          path: GeminiSnap-Windows.zip
       - name: Attach to release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/GeminiSnap-Windows.exe
+          files: GeminiSnap-Windows.zip
 
   macos:
-    runs-on: macos-latest
+    strategy:
+      matrix:
+        include:
+          - runner: macos-latest        # Apple Silicon (M1/M2/M3/M4)
+            suffix: AppleSilicon
+          - runner: macos-15-intel      # Intel Macs
+            suffix: Intel
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -48,13 +56,13 @@ jobs:
           # menu-bar-only app: no Dock icon
           /usr/libexec/PlistBuddy -c "Add :LSUIElement bool true" dist/GeminiSnap.app/Contents/Info.plist
           codesign --force --deep -s - dist/GeminiSnap.app
-          ditto -c -k --keepParent dist/GeminiSnap.app GeminiSnap-Mac.zip
+          ditto -c -k --keepParent dist/GeminiSnap.app GeminiSnap-Mac-${{ matrix.suffix }}.zip
       - uses: actions/upload-artifact@v4
         with:
-          name: macos
-          path: GeminiSnap-Mac.zip
+          name: macos-${{ matrix.suffix }}
+          path: GeminiSnap-Mac-${{ matrix.suffix }}.zip
       - name: Attach to release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: GeminiSnap-Mac.zip
+          files: GeminiSnap-Mac-${{ matrix.suffix }}.zip
